@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 712" width="960" height="712" role="img" aria-labelledby="t d">
+  <title id="t">API design skills: order, roles and output</title>
+  <desc id="d">Markdown inputs feed arc-design-api, which runs arc-new-api-stories, a story review by product, and arc-create-api-spec in one call. arc-api-spec-review checks a new or existing OpenAPI specification. Each step produces stories.md, openapi.json or review-report.md.</desc>
+  <style>
+    :root { --p0:#FBF8F3; --p1:#FDFBF7; --p2:#F7F3EC; --hair:#E7E0D5; --i0:#1F1B15; --i1:#3D382F; --i2:#5E5649; --i3:#756D62; --ac:#135E63; }
+    @media (prefers-color-scheme: dark) {
+      :root { --p0:#16130F; --p1:#221E18; --p2:#100E0B; --hair:#322C23; --i0:#EDE6D9; --i1:#C5BAA8; --i2:#A79C8C; --i3:#908678; --ac:#4FB8BE; }
+    }
+    text { font-family: 'IBM Plex Sans', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 13px; fill: var(--i1); }
+    .m { font-family: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace; }
+    .name { font-size: 14px; font-weight: 500; fill: var(--i0); }
+    .mono-name { font-size: 13px; font-weight: 500; fill: var(--i0); }
+    .mut { fill: var(--i3); }
+    .sec { fill: var(--i2); }
+    .code { font-size: 12px; fill: var(--i1); }
+    .label { font-size: 11px; letter-spacing: 0.05em; fill: var(--i2); }
+    .chiptxt { font-size: 11px; letter-spacing: 0.05em; fill: var(--i2); text-anchor: middle; }
+    .num { font-size: 11px; font-weight: 500; fill: var(--ac); text-anchor: middle; }
+    .acc { fill: var(--ac); font-weight: 500; }
+    .ground { fill: var(--p0); }
+    .panel { fill: var(--p2); stroke: var(--hair); stroke-width: 1; }
+    .card { fill: var(--p1); stroke: var(--hair); stroke-width: 1; }
+    .chip { fill: none; stroke: var(--i3); stroke-width: 1; }
+    .marker-box { fill: none; stroke: var(--ac); stroke-width: 1; }
+    .bracket { fill: none; stroke: var(--ac); stroke-width: 1; }
+    .gate { fill: var(--p1); stroke: var(--i2); stroke-width: 1; }
+    .arrow { fill: none; stroke: var(--i2); stroke-width: 1; }
+    .dash { fill: none; stroke: var(--i2); stroke-width: 1; stroke-dasharray: 4 3; }
+    .head { fill: none; stroke: var(--i2); stroke-width: 1; }
+  </style>
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path class="head" d="M1 1 L9 5 L1 9"/>
+    </marker>
+  </defs>
+
+  <rect class="ground" x="0" y="0" width="960" height="712"/>
+
+  <!-- Inputs -->
+  <rect class="panel" x="24" y="24" width="640" height="128" rx="4"/>
+  <text class="m label" x="40" y="46">INPUTS · MARKDOWN FILES</text>
+
+  <rect class="card" x="40" y="60" width="140" height="76" rx="4"/>
+  <text class="name" x="52" y="82">Requirements</text>
+  <text class="mut" x="52" y="102">Needs, use cases</text>
+  <rect class="chip" x="52" y="112" width="64" height="20" rx="2"/><text class="m chiptxt" x="84" y="126">PO / PM</text>
+
+  <rect class="card" x="196" y="60" width="140" height="76" rx="4"/>
+  <text class="name" x="208" y="82">Domain model</text>
+  <text class="mut" x="208" y="102">Objects, fields</text>
+  <rect class="chip" x="208" y="112" width="64" height="20" rx="2"/><text class="m chiptxt" x="240" y="126">PO / PM</text>
+  <rect class="chip" x="278" y="112" width="44" height="20" rx="2"/><text class="m chiptxt" x="300" y="126">DEV</text>
+
+  <rect class="card" x="352" y="60" width="140" height="76" rx="4"/>
+  <text class="name" x="364" y="82">API standards</text>
+  <text class="mut" x="364" y="102">Naming, paths</text>
+  <rect class="chip" x="364" y="112" width="44" height="20" rx="2"/><text class="m chiptxt" x="386" y="126">DEV</text>
+
+  <rect class="card" x="508" y="60" width="140" height="76" rx="4"/>
+  <text class="name" x="520" y="82">Best practices</text>
+  <text class="mut" x="520" y="102">Doc quality</text>
+  <rect class="chip" x="520" y="112" width="44" height="20" rx="2"/><text class="m chiptxt" x="542" y="126">DEV</text>
+
+  <!-- Existing spec -->
+  <rect class="card" x="700" y="24" width="236" height="128" rx="4"/>
+  <text class="name" x="716" y="50">Existing OpenAPI spec</text>
+  <text class="mut" x="716" y="72">JSON or YAML, local file</text>
+  <text class="mut" x="716" y="90">A URL or repo only on request</text>
+  <rect class="chip" x="716" y="112" width="40" height="20" rx="2"/><text class="m chiptxt" x="736" y="126">QA</text>
+  <rect class="chip" x="762" y="112" width="44" height="20" rx="2"/><text class="m chiptxt" x="784" y="126">DEV</text>
+
+  <path class="arrow" d="M344 152 V194" marker-end="url(#ah)"/>
+  <text class="mut" x="356" y="178">feed steps 1 and 2</text>
+  <path class="arrow" d="M818 152 V238" marker-end="url(#ah)"/>
+
+  <!-- arc-design-api bracket -->
+  <rect class="bracket" x="24" y="196" width="640" height="208" rx="4"/>
+  <text class="m acc" x="40" y="222" style="font-size:13px">arc-design-api</text>
+  <text class="sec" x="160" y="222">steps 1 and 2 with the story review, in one call</text>
+
+  <!-- Step 1 -->
+  <rect class="card" x="40" y="240" width="224" height="148" rx="4"/>
+  <rect class="marker-box" x="56" y="256" width="24" height="24" rx="2"/><text class="m num" x="68" y="272">01</text>
+  <text class="m mono-name" x="88" y="273">arc-new-api-stories</text>
+  <text x="56" y="302">Requirements → API stories</text>
+  <text class="mut" x="56" y="322">needs: requirements,</text>
+  <text class="mut" x="56" y="338">domain, standards</text>
+  <rect class="chip" x="56" y="352" width="64" height="20" rx="2"/><text class="m chiptxt" x="88" y="366">PO / PM</text>
+
+  <!-- Gate -->
+  <path class="arrow" d="M264 314 H286" marker-end="url(#ah)"/>
+  <polygon class="gate" points="344,266 400,314 344,362 288,314"/>
+  <text x="344" y="302" text-anchor="middle">Review</text>
+  <text x="344" y="318" text-anchor="middle">PO / PM</text>
+  <text x="344" y="334" text-anchor="middle">approves</text>
+  <path class="arrow" d="M400 314 H422" marker-end="url(#ah)"/>
+
+  <!-- Step 2 -->
+  <rect class="card" x="424" y="240" width="224" height="148" rx="4"/>
+  <rect class="marker-box" x="440" y="256" width="24" height="24" rx="2"/><text class="m num" x="452" y="272">02</text>
+  <text class="m mono-name" x="472" y="273">arc-create-api-spec</text>
+  <text x="440" y="302">Stories → OpenAPI 3.1</text>
+  <text class="mut" x="440" y="322">needs: stories, domain,</text>
+  <text class="mut" x="440" y="338">standards, best practices</text>
+  <rect class="chip" x="440" y="352" width="44" height="20" rx="2"/><text class="m chiptxt" x="462" y="366">DEV</text>
+  <rect class="chip" x="490" y="352" width="64" height="20" rx="2"/><text class="m chiptxt" x="522" y="366">PO / PM</text>
+
+  <path class="arrow" d="M648 314 H698" marker-end="url(#ah)"/>
+
+  <!-- Step 3 -->
+  <rect class="card" x="700" y="240" width="236" height="148" rx="4"/>
+  <rect class="marker-box" x="716" y="256" width="24" height="24" rx="2"/><text class="m num" x="728" y="272">03</text>
+  <text class="m mono-name" x="748" y="273">arc-api-spec-review</text>
+  <text x="716" y="302">Spec → divergence report</text>
+  <text class="mut" x="716" y="322">lints locally first, then</text>
+  <text class="mut" x="716" y="338">checks against rule sets</text>
+  <rect class="chip" x="716" y="352" width="40" height="20" rx="2"/><text class="m chiptxt" x="736" y="366">QA</text>
+  <rect class="chip" x="762" y="352" width="44" height="20" rx="2"/><text class="m chiptxt" x="784" y="366">DEV</text>
+
+  <!-- Feedback -->
+  <path class="dash" d="M720 388 V428 H600 V390" marker-end="url(#ah)"/>
+  <text class="mut" x="660" y="448" text-anchor="middle">fixes after approval</text>
+  <text class="mut" x="660" y="464" text-anchor="middle">by QA / Dev</text>
+
+  <!-- Output arrows -->
+  <path class="arrow" d="M232 388 V518" marker-end="url(#ah)"/>
+  <path class="arrow" d="M536 388 V518" marker-end="url(#ah)"/>
+  <path class="arrow" d="M818 388 V518" marker-end="url(#ah)"/>
+
+  <!-- Outputs -->
+  <rect class="panel" x="24" y="480" width="912" height="164" rx="4"/>
+  <text class="m label" x="40" y="504">OUTPUT, SHORTENED</text>
+
+  <rect class="card" x="40" y="520" width="224" height="108" rx="4"/>
+  <text class="m mono-name" x="56" y="546">stories.md</text>
+  <text class="m code" x="56" y="568">## Theme 1: Pets</text>
+  <text class="m code" x="56" y="584">#### Story 1.1: List pets</text>
+  <text class="m code" x="56" y="600">Method: GET /pets</text>
+  <text class="m code" x="56" y="616">Params: cursor, limit</text>
+
+  <text class="mut" x="284" y="548">Domain wins on</text>
+  <text class="mut" x="284" y="564">names, endings and</text>
+  <text class="mut" x="284" y="580">enum values.</text>
+  <text class="mut" x="284" y="596">Casing comes from</text>
+  <text class="mut" x="284" y="612">the standards.</text>
+
+  <rect class="card" x="424" y="520" width="224" height="108" rx="4"/>
+  <text class="m mono-name" x="440" y="546">openapi.json</text>
+  <text class="m code" x="440" y="568">{ "openapi": "3.1.0",</text>
+  <text class="m code" x="440" y="584">  "paths": { ... },</text>
+  <text class="m code" x="440" y="600">Lint: 93 / 100 (example)</text>
+  <text class="m code" x="440" y="616">+ offline HTML preview</text>
+
+  <rect class="card" x="700" y="520" width="236" height="108" rx="4"/>
+  <text class="m mono-name" x="716" y="546">review-report.md</text>
+  <text class="m code" x="716" y="568">4 divergences (example):</text>
+  <text class="m code" x="716" y="584">2 fix, 1 deliberate,</text>
+  <text class="m code" x="716" y="600">1 decide</text>
+  <text class="m code" x="716" y="616">Fix: pagination on /pets</text>
+
+  <!-- Footer -->
+  <text class="sec" x="24" y="672">New API: start with arc-design-api. Existing API: step 3 only. Use single skills when stories exist or one step is missing.</text>
+  <text class="sec" x="24" y="692">Everything stays local: linter and preview (from arc-create-api-spec) need only the Python standard library. No upload, no CDN.</text>
+</svg>

@@ -19,6 +19,8 @@ Agent Skills by Arslan Chaudhry, Product Owner in learning software. Each skill 
 
 The four API skills build on each other and keep product, development and QA in view.
 
+![The four API design skills: inputs, steps 1 to 3 with roles, and the output of each step](docs/api-design-flow.svg)
+
 1. `arc-new-api-stories` turns requirements, a domain model and API standards into API stories. Product owners or managers review and approve them.
 2. `arc-create-api-spec` generates an OpenAPI 3.1 specification from the stories, lints it locally and shows a preview. Development usually takes over here.
 3. `arc-api-spec-review` checks a new or existing specification against standards and best practices. The divergence report is written for QA and development; fixes follow only after their approval.
