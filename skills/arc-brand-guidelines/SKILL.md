@@ -3,10 +3,10 @@ name: arc-brand-guidelines
 description: "Brand guidelines document: foundation, visual identity with exact values, verbal identity, messaging, brand in use. Step 3 of arc-brand-workflow."
 disable-model-invocation: true
 license: MIT
-compatibility: "Claude Code. Braucht kein Werkzeug."
+compatibility: "Claude Code. Needs no extra tools."
 metadata:
   author: "Arslan Chaudhry, nach arnabbagxd/brand-building-skills"
-  version: "1.2.0"
+  version: "1.2.1"
 ---
 
 # Brand Guidelines

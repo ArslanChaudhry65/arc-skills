@@ -3,10 +3,10 @@ name: arc-brand-identity
 description: "Visual identity brief for a brand: identity strategy, logo direction, color palette, typography, imagery, motion, design principles. Step 2 of arc-brand-workflow."
 disable-model-invocation: true
 license: MIT
-compatibility: "Claude Code. Braucht kein Werkzeug."
+compatibility: "Claude Code. Needs no extra tools."
 metadata:
   author: "Arslan Chaudhry, nach arnabbagxd/brand-building-skills"
-  version: "1.3.0"
+  version: "1.3.1"
 ---
 
 # Brand Identity

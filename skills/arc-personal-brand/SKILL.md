@@ -3,10 +3,10 @@ name: arc-personal-brand
 description: "Personal brand strategy for one person: foundation, audience, positioning, point of view, voice. Step 1 of arc-brand-workflow."
 disable-model-invocation: true
 license: MIT
-compatibility: "Claude Code. Braucht kein Werkzeug."
+compatibility: "Claude Code. Needs no extra tools."
 metadata:
   author: "Arslan Chaudhry, nach arnabbagxd/brand-building-skills"
-  version: "1.1.0"
+  version: "1.1.1"
 ---
 
 # Personal Brand

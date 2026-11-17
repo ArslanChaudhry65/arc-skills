@@ -3,10 +3,10 @@ name: arc-social-media-strategy
 description: "Social media strategy for one person, built on an existing personal brand: platform, content pillars, bio versions, 90-day launch plan. Runs after arc-personal-brand."
 disable-model-invocation: true
 license: MIT
-compatibility: "Claude Code. Braucht kein Werkzeug. Liest das Ergebnis von arc-personal-brand."
+compatibility: "Claude Code. Needs no extra tools. Reads the result of arc-personal-brand."
 metadata:
   author: "Arslan Chaudhry, nach arnabbagxd/brand-building-skills"
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 
 # Social Media Strategy

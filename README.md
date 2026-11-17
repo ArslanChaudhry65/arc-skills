@@ -1,47 +1,47 @@
 # arc-skills
 
-Agent Skills von Arslan Chaudhry, Product Owner im Bereich Learning Software. Jeder Skill ist ein Ordner unter `skills/` mit einer `SKILL.md` und optional Skripten und Referenzen. Sie laufen in Claude Code und, soweit in `compatibility` angegeben, in Codex.
+Agent Skills by Arslan Chaudhry, Product Owner in learning software. Each skill is a folder under `skills/` with a `SKILL.md` and, where needed, scripts and references. They run in Claude Code and, where `compatibility` says so, in Codex.
 
 ## Skills
 
-| Skill | Wofür |
+| Skill | Purpose |
 | --- | --- |
-| `arc-new-api-stories` | API Design Stories aus Anforderungen, Domänenmodell und API-Standards |
-| `arc-create-api-spec` | OpenAPI 3.1.0 aus Stories, mit Offline-Linter und Vorschau |
-| `arc-api-spec-review` | OpenAPI-Spezifikation gegen Standards und Best Practices prüfen |
-| `arc-design-api` | Ganzer Weg von der Anforderung bis zur geprüften Spezifikation |
-| `arc-personal-brand` | Personal-Brand-Strategie für eine Person |
-| `arc-brand-identity` | Brief zur visuellen Identität |
-| `arc-brand-guidelines` | Brand-Guidelines-Dokument |
-| `arc-social-media-strategy` | Social-Media-Strategie auf Basis einer Personal Brand |
+| `arc-new-api-stories` | API design stories from requirements, a domain model and API standards |
+| `arc-create-api-spec` | OpenAPI 3.1.0 from stories, with an offline linter and preview |
+| `arc-api-spec-review` | Review an OpenAPI specification against standards and best practices |
+| `arc-design-api` | The whole path from requirements to a validated specification |
+| `arc-personal-brand` | Personal brand strategy for one person |
+| `arc-brand-identity` | Visual identity brief |
+| `arc-brand-guidelines` | Brand guidelines document |
+| `arc-social-media-strategy` | Social media strategy built on a personal brand |
 
-## API-Design: Reihenfolge und Rollen
+## API design: order and roles
 
-Die vier API-Skills bauen aufeinander auf und denken die Sicht von Produkt, Entwicklung und QA mit.
+The four API skills build on each other and keep product, development and QA in view.
 
-1. `arc-new-api-stories` macht aus Requirements, Domänenmodell und API-Standards API Stories. PO oder PM prüfen und geben sie frei.
-2. `arc-create-api-spec` erzeugt aus den Stories eine OpenAPI-3.1-Spezifikation, lintet sie lokal und zeigt sie als Vorschau. Meist übernimmt hier die Entwicklung.
-3. `arc-api-spec-review` prüft eine neue oder bestehende Spezifikation gegen Standards und Best Practices. Der Abweichungsbericht richtet sich an QA und Entwicklung; Korrekturen folgen erst nach deren Freigabe.
+1. `arc-new-api-stories` turns requirements, a domain model and API standards into API stories. Product owners or managers review and approve them.
+2. `arc-create-api-spec` generates an OpenAPI 3.1 specification from the stories, lints it locally and shows a preview. Development usually takes over here.
+3. `arc-api-spec-review` checks a new or existing specification against standards and best practices. The divergence report is written for QA and development; fixes follow only after their approval.
 
-`arc-design-api` führt Schritt 1 und 2 samt Review der Stories in einem Aufruf zusammen. Für eine bestehende Spezifikation reicht Schritt 3.
+`arc-design-api` runs steps 1 and 2, including the review of the stories, in a single call. For an existing specification, step 3 is enough.
 
-Die Eingaben sind Markdown-Dateien (Requirements, Domänenmodell, API-Standards, Best Practices); Beispiele liegen jedem Skill bei. Bei einem Konflikt gewinnt das Domänenmodell bei Namen und Werten, die Schreibweise kommt aus den Standards. Alles läuft lokal: Linter und Vorschau brauchen nur die Python-Standardbibliothek, ohne Upload und ohne CDN.
+Inputs are Markdown files (requirements, domain model, API standards, best practices); every skill ships with examples. When names or values conflict, the domain model wins; the casing comes from the standards. Everything runs locally: the linter and preview need only the Python standard library, with no upload and no CDN.
 
-Standards und Best Practices sind allgemeine Vorgaben. Einzelne Entscheidungen passen vielleicht nicht zu jeder Organisation; eigene Regelwerke lassen sich statt der Beispiele übergeben.
+The standards and best practices are general defaults. Some decisions may not fit every organization; pass your own rule sets instead of the examples.
 
 ## Installation
 
-Den gewünschten Ordner nach `~/.claude/skills/` kopieren, zum Beispiel:
+Copy the folder you want to `~/.claude/skills/`, for example:
 
 ```bash
 cp -R skills/arc-new-api-stories ~/.claude/skills/
 ```
 
-Die vier API-Skills bauen aufeinander auf. `arc-api-spec-review` und `arc-design-api` brauchen den Linter aus `arc-create-api-spec`, installiere sie also zusammen. Die Brand-Skills verweisen auf einen Workflow, der nicht Teil dieses Repos ist; einzeln laufen sie trotzdem.
+The four API skills build on each other. `arc-api-spec-review` and `arc-design-api` need the linter from `arc-create-api-spec`, so install them together. The brand skills refer to a workflow that is not part of this repo; they still run on their own.
 
-## Herkunft und Lizenz
+## Origin and license
 
-Alles steht unter der MIT-Lizenz, siehe [LICENSE](LICENSE).
+Everything is released under the MIT license, see [LICENSE](LICENSE).
 
-- Die vier API-Skills gehen auf die Methode von Emmanuel Paraskakis (Level 250) zurück. Sein Copyright-Hinweis steht in der `LICENSE` jedes dieser Skills.
-- Die vier Brand-Skills sind angepasst nach [arnabbagxd/brand-building-skills](https://github.com/arnabbagxd/brand-building-skills) (MIT).
+- The four API skills are based on the method by Emmanuel Paraskakis (Level 250). His copyright notice is in the `LICENSE` of each of these skills.
+- The four brand skills are adapted from [arnabbagxd/brand-building-skills](https://github.com/arnabbagxd/brand-building-skills) (MIT).
