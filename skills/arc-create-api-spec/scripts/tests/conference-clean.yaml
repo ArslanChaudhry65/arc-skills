@@ -1,0 +1,717 @@
+# Conference Schedule API, the clean test case as YAML.
+# Same content as conference-clean.json; written with comments, folded block
+# scalars, flow sequences and unquoted status codes on purpose.
+---
+openapi: 3.1.0
+info:
+  title: Conference Schedule API
+  description: >-
+    Read-only API for browsing the tracks, talks and speakers of a
+    conference. All endpoints are public and need no authentication.
+  version: 1.0.0
+  contact:
+    name: Conference API Team
+    url: https://conference-schedule.io/support
+    email: api@conference-schedule.io
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+  - url: https://api.conference-schedule.io
+    description: Production
+tags:
+  - name: Tracks
+    description: Thematic groupings of talks, such as API Design or AI/ML.
+  - name: Talks
+    description: Sessions delivered by speakers at a scheduled time in a room.
+  - name: Speakers
+    description: People who deliver talks at the conference.
+
+# Endpoints from the stories
+paths:
+  /tracks:
+    get:
+      tags: [Tracks]
+      summary: List all tracks
+      operationId: listTracks
+      description: >-
+        Returns a paginated TrackCollection with every conference track, sorted
+        by id. Pagination uses offset and limit.
+      parameters:
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        200:
+          description: A page of tracks.
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TrackCollection"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        429:
+          $ref: "#/components/responses/TooManyRequests"
+        500:
+          $ref: "#/components/responses/InternalServerError"
+  /tracks/{trackId}:
+    get:
+      tags: [Tracks]
+      summary: Get a track
+      operationId: getTrack
+      description: >-
+        Returns the Track with the given trackId, including its name and
+        description. Returns 404 when no track has this id.
+      parameters:
+        - $ref: "#/components/parameters/TrackId"
+      responses:
+        200:
+          description: The track.
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Track"
+        404:
+          $ref: "#/components/responses/NotFound"
+        429:
+          $ref: "#/components/responses/TooManyRequests"
+        500:
+          $ref: "#/components/responses/InternalServerError"
+  /tracks/{trackId}/talks:
+    get:
+      tags: [Tracks, Talks]
+      summary: List talks in a track
+      operationId: listTrackTalks
+      description: >-
+        Returns a paginated TalkCollection with the talks of one track.
+        Supports filtering by format (Keynote, Talk, Workshop, Panel) and date,
+        and pagination via offset and limit. Returns 404 when the track does
+        not exist.
+      parameters:
+        - $ref: "#/components/parameters/TrackId"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/FormatFilter"
+        - $ref: "#/components/parameters/DateFilter"
+      responses:
+        200:
+          description: A page of talks in the track.
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TalkCollection"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        404:
+          $ref: "#/components/responses/NotFound"
+        429:
+          $ref: "#/components/responses/TooManyRequests"
+        500:
+          $ref: "#/components/responses/InternalServerError"
+  /talks:
+    get:
+      tags: [Talks]
+      summary: List all talks
+      operationId: listTalks
+      description: >-
+        Returns a paginated TalkCollection with talks across all tracks.
+        Supports filtering by format (Keynote, Talk, Workshop, Panel), date and
+        trackId, and pagination via offset and limit. Filters combine with AND.
+      parameters:
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/FormatFilter"
+        - $ref: "#/components/parameters/DateFilter"
+        - $ref: "#/components/parameters/TrackIdFilter"
+      responses:
+        200:
+          description: A page of talks.
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TalkCollection"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        429:
+          $ref: "#/components/responses/TooManyRequests"
+        500:
+          $ref: "#/components/responses/InternalServerError"
+  /talks/{talkId}:
+    get:
+      tags: [Talks]
+      summary: Get a talk
+      operationId: getTalk
+      description: >-
+        Returns the Talk with the given talkId: description, format, room,
+        schedule, track and speaker ids. Returns 404 when no talk has this id.
+      parameters:
+        - $ref: "#/components/parameters/TalkId"
+      responses:
+        200:
+          description: The talk.
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Talk"
+        404:
+          $ref: "#/components/responses/NotFound"
+        429:
+          $ref: "#/components/responses/TooManyRequests"
+        500:
+          $ref: "#/components/responses/InternalServerError"
+  /speakers:
+    get:
+      tags: [Speakers]
+      summary: List all speakers
+      operationId: listSpeakers
+      description: >-
+        Returns a paginated SpeakerCollection. Supports filtering by name, a
+        case-insensitive partial match, and pagination via offset and limit.
+      parameters:
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/NameFilter"
+      responses:
+        200:
+          description: A page of speakers.
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SpeakerCollection"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        429:
+          $ref: "#/components/responses/TooManyRequests"
+        500:
+          $ref: "#/components/responses/InternalServerError"
+  /speakers/{speakerId}:
+    get:
+      tags: [Speakers]
+      summary: Get a speaker
+      operationId: getSpeaker
+      description: >-
+        Returns the Speaker with the given speakerId, including title, company
+        and bio. Returns 404 when no speaker has this id.
+      parameters:
+        - $ref: "#/components/parameters/SpeakerId"
+      responses:
+        200:
+          description: The speaker.
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Speaker"
+        404:
+          $ref: "#/components/responses/NotFound"
+        429:
+          $ref: "#/components/responses/TooManyRequests"
+        500:
+          $ref: "#/components/responses/InternalServerError"
+  /speakers/{speakerId}/talks:
+    get:
+      tags: [Speakers, Talks]
+      summary: List talks by a speaker
+      operationId: listSpeakerTalks
+      description: >-
+        Returns a paginated TalkCollection with every talk the speaker gives,
+        with pagination via offset and limit. Returns 404 when the speaker does
+        not exist.
+      parameters:
+        - $ref: "#/components/parameters/SpeakerId"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        200:
+          description: A page of talks by the speaker.
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TalkCollection"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        404:
+          $ref: "#/components/responses/NotFound"
+        429:
+          $ref: "#/components/responses/TooManyRequests"
+        500:
+          $ref: "#/components/responses/InternalServerError"
+
+# Reusable components
+components:
+  schemas:
+    Track:
+      type: object
+      description: A thematic grouping of talks.
+      required: [id, name, description]
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier of the track.
+        name:
+          type: string
+          description: Name of the track.
+        description:
+          type: string
+          description: What the track is about.
+      example:
+        id: 1c6764cb-c211-4be8-aa42-91bd1ba38c83
+        name: OpenAPI Summit
+        description: Talks about designing, documenting and governing APIs with OpenAPI.
+    Speaker:
+      type: object
+      description: A person who delivers talks.
+      required: [id, name, title]
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier of the speaker.
+        name:
+          type: string
+          description: Full name of the speaker.
+        title:
+          type: string
+          description: Job title of the speaker.
+        company:
+          type: string
+          description: Company the speaker works for.
+        bio:
+          type: string
+          description: Short biography of the speaker.
+      example:
+        id: 0b1f6a2e-5c3d-4e8f-9a7b-2d4c6e8f0a1b
+        name: Emmanuel Paraskakis
+        title: API Consultant
+        company: Level 250
+        bio: API consultant and educator specializing in API strategy and design
+    Talk:
+      type: object
+      description: A session delivered by one or more speakers.
+      required: [id, title, description, format, room, trackId, speakerIds, date, startTime, endTime]
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier of the talk.
+        title:
+          type: string
+          description: Title of the talk.
+        description:
+          type: string
+          description: Abstract of the talk.
+        format:
+          $ref: "#/components/schemas/TalkFormat"
+        room:
+          type: string
+          description: Room where the talk takes place.
+        trackId:
+          type: string
+          format: uuid
+          description: Identifier of the track the talk belongs to.
+        speakerIds:
+          type: array
+          description: Identifiers of the speakers giving the talk.
+          minItems: 1
+          items:
+            type: string
+            format: uuid
+        date:
+          type: string
+          format: date
+          description: Day of the talk (RFC 3339).
+        startTime:
+          type: string
+          format: date-time
+          description: Start time in UTC.
+        endTime:
+          type: string
+          format: date-time
+          description: End time in UTC.
+      example:
+        id: 7e0a5f0e-9d4b-4c6a-8f2d-3b1a9c5e7d42
+        title: AI-Driven API Design with OpenAPI
+        description: How to go from requirements to a linted OpenAPI document with an LLM.
+        format: Talk
+        room: PRO Stage
+        trackId: 1c6764cb-c211-4be8-aa42-91bd1ba38c83
+        speakerIds: [0b1f6a2e-5c3d-4e8f-9a7b-2d4c6e8f0a1b]
+        date: 2026-02-20
+        startTime: 2026-02-20T21:30:00Z
+        endTime: 2026-02-20T22:15:00Z
+    TalkFormat:
+      type: string
+      description: Format of a talk. Treat unknown values as open.
+      enum: [Keynote, Talk, Workshop, Panel]
+      example: Talk
+    TrackCollection:
+      type: object
+      description: A page of tracks.
+      required: [data, meta]
+      properties:
+        data:
+          type: array
+          description: The tracks on this page.
+          items:
+            $ref: "#/components/schemas/Track"
+        meta:
+          $ref: "#/components/schemas/CollectionMeta"
+      example:
+        data:
+          - id: 1c6764cb-c211-4be8-aa42-91bd1ba38c83
+            name: OpenAPI Summit
+            description: Talks about designing, documenting and governing APIs with OpenAPI.
+        meta:
+          totalCount: 1
+          limit: 50
+          offset: 0
+    TalkCollection:
+      type: object
+      description: A page of talks.
+      required: [data, meta]
+      properties:
+        data:
+          type: array
+          description: The talks on this page.
+          items:
+            $ref: "#/components/schemas/Talk"
+        meta:
+          $ref: "#/components/schemas/CollectionMeta"
+      example:
+        data:
+          - id: 7e0a5f0e-9d4b-4c6a-8f2d-3b1a9c5e7d42
+            title: AI-Driven API Design with OpenAPI
+            description: How to go from requirements to a linted OpenAPI document with an LLM.
+            format: Talk
+            room: PRO Stage
+            trackId: 1c6764cb-c211-4be8-aa42-91bd1ba38c83
+            speakerIds: [0b1f6a2e-5c3d-4e8f-9a7b-2d4c6e8f0a1b]
+            date: 2026-02-20
+            startTime: 2026-02-20T21:30:00Z
+            endTime: 2026-02-20T22:15:00Z
+        meta:
+          totalCount: 1
+          limit: 50
+          offset: 0
+    SpeakerCollection:
+      type: object
+      description: A page of speakers.
+      required: [data, meta]
+      properties:
+        data:
+          type: array
+          description: The speakers on this page.
+          items:
+            $ref: "#/components/schemas/Speaker"
+        meta:
+          $ref: "#/components/schemas/CollectionMeta"
+      example:
+        data:
+          - id: 0b1f6a2e-5c3d-4e8f-9a7b-2d4c6e8f0a1b
+            name: Emmanuel Paraskakis
+            title: API Consultant
+            company: Level 250
+            bio: API consultant and educator specializing in API strategy and design
+        meta:
+          totalCount: 1
+          limit: 50
+          offset: 0
+    CollectionMeta:
+      type: object
+      description: Pagination details of a collection.
+      required: [totalCount, limit, offset]
+      properties:
+        totalCount:
+          type: integer
+          minimum: 0
+          description: Number of items across all pages.
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 1000
+          description: Page size used for this response.
+        offset:
+          type: integer
+          minimum: 0
+          description: Index of the first item on this page.
+      example:
+        totalCount: 1
+        limit: 50
+        offset: 0
+    Problem:
+      type: object
+      description: Problem Details as defined in RFC 9457.
+      required: [type, title, status]
+      properties:
+        type:
+          type: string
+          format: uri
+          description: URI identifying the error class.
+        title:
+          type: string
+          description: Short, stable summary of the error class.
+        status:
+          type: integer
+          description: HTTP status code of this occurrence.
+        detail:
+          type: string
+          description: What went wrong in this occurrence.
+        instance:
+          type: string
+          description: URI reference identifying this occurrence.
+        errors:
+          type: array
+          description: Invalid fields, for validation errors.
+          items:
+            $ref: "#/components/schemas/ProblemFieldError"
+      example:
+        type: https://api.conference-schedule.io/problems/not-found
+        title: Resource not found
+        status: 404
+        detail: No track with id 1c6764cb-c211-4be8-aa42-91bd1ba38c83.
+        instance: /tracks/1c6764cb-c211-4be8-aa42-91bd1ba38c83
+    ProblemFieldError:
+      type: object
+      description: One invalid field of a request.
+      required: [name, reason]
+      properties:
+        name:
+          type: string
+          description: Name of the invalid parameter or field.
+        reason:
+          type: string
+          description: Why the value is invalid.
+      example:
+        name: limit
+        reason: must be between 1 and 1000
+  parameters:
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip. Default 0.
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+      example: 0
+    Limit:
+      name: limit
+      in: query
+      description: >-
+        Maximum number of items to return. Default 50, maximum 1000; larger
+        values are clamped.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 1000
+        default: 50
+      example: 50
+    TrackId:
+      name: trackId
+      in: path
+      required: true
+      description: Identifier of the track.
+      schema:
+        type: string
+        format: uuid
+      example: 1c6764cb-c211-4be8-aa42-91bd1ba38c83
+    TalkId:
+      name: talkId
+      in: path
+      required: true
+      description: Identifier of the talk.
+      schema:
+        type: string
+        format: uuid
+      example: 7e0a5f0e-9d4b-4c6a-8f2d-3b1a9c5e7d42
+    SpeakerId:
+      name: speakerId
+      in: path
+      required: true
+      description: Identifier of the speaker.
+      schema:
+        type: string
+        format: uuid
+      example: 0b1f6a2e-5c3d-4e8f-9a7b-2d4c6e8f0a1b
+    FormatFilter:
+      name: format
+      in: query
+      description: Return only talks of this format.
+      schema:
+        $ref: "#/components/schemas/TalkFormat"
+      example: Workshop
+    DateFilter:
+      name: date
+      in: query
+      description: Return only talks on this day (ISO 8601 date).
+      schema:
+        type: string
+        format: date
+      example: 2026-02-20
+    TrackIdFilter:
+      name: trackId
+      in: query
+      description: Return only talks in this track.
+      schema:
+        type: string
+        format: uuid
+      example: 1c6764cb-c211-4be8-aa42-91bd1ba38c83
+    NameFilter:
+      name: name
+      in: query
+      description: Case-insensitive partial match on the speaker name.
+      schema:
+        type: string
+        minLength: 1
+      example: emma
+  responses:
+    BadRequest:
+      description: >-
+        A query parameter is invalid. The errors array names each invalid
+        parameter.
+      headers:
+        X-RateLimit-Limit:
+          $ref: "#/components/headers/X-RateLimit-Limit"
+        X-RateLimit-Remaining:
+          $ref: "#/components/headers/X-RateLimit-Remaining"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/Problem"
+          example:
+            type: https://api.conference-schedule.io/problems/validation-error
+            title: Validation error
+            status: 400
+            detail: The request has 1 invalid parameter.
+            instance: /talks
+            errors:
+              - name: date
+                reason: must be an ISO 8601 date
+    NotFound:
+      description: No resource exists with the given identifier.
+      headers:
+        X-RateLimit-Limit:
+          $ref: "#/components/headers/X-RateLimit-Limit"
+        X-RateLimit-Remaining:
+          $ref: "#/components/headers/X-RateLimit-Remaining"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/Problem"
+          example:
+            type: https://api.conference-schedule.io/problems/not-found
+            title: Resource not found
+            status: 404
+            detail: No talk with id 7e0a5f0e-9d4b-4c6a-8f2d-3b1a9c5e7d42.
+            instance: /talks/7e0a5f0e-9d4b-4c6a-8f2d-3b1a9c5e7d42
+    TooManyRequests:
+      description: >-
+        The client sent too many requests. Retry after the number of seconds in
+        Retry-After.
+      headers:
+        X-RateLimit-Limit:
+          $ref: "#/components/headers/X-RateLimit-Limit"
+        X-RateLimit-Remaining:
+          $ref: "#/components/headers/X-RateLimit-Remaining"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/Problem"
+          example:
+            type: https://api.conference-schedule.io/problems/rate-limited
+            title: Too many requests
+            status: 429
+            detail: Rate limit of 100 requests per minute exceeded; retry in 30 seconds.
+            instance: /talks
+    InternalServerError:
+      description: The server failed unexpectedly. The request can be retried later.
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/Problem"
+          example:
+            type: https://api.conference-schedule.io/problems/internal-error
+            title: Internal server error
+            status: 500
+            detail: The schedule could not be loaded.
+            instance: /talks
+  headers:
+    X-RateLimit-Limit:
+      description: Requests allowed in the current window.
+      schema:
+        type: integer
+        minimum: 0
+      example: 100
+    X-RateLimit-Remaining:
+      description: Requests left in the current window.
+      schema:
+        type: integer
+        minimum: 0
+      example: 97
+    Retry-After:
+      description: Seconds to wait before the next request.
+      schema:
+        type: integer
+        minimum: 0
+      example: 30
